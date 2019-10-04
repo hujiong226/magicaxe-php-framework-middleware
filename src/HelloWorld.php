@@ -28,7 +28,7 @@ class HelloWorld
      */
     public function info()
     {
-        $info = "Hello World 2222! \n";
+        $info = "Hello World 2222111! \n";
         $info .= "\t--Power By ";
         $info .= $this->author . "\n";
         return $info;
