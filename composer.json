@@ -1,6 +1,6 @@
 {
-    "name": "magicaxe/php-framework-middleware",
-    "description": "magicaxe-php-framework-middleware",
+    "name": "magicaxe/framework-middleware",
+    "description": "magicaxe-framework-middleware",
     "type": "library",
     "license": "MIT",
     "authors": [
