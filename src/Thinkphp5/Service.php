@@ -33,13 +33,6 @@ abstract class Service
         return config('database.prefix') . $table_name;
     }
     
-    public function getSplitTableName($table_name, $id)
-    {
-        $suffix = intval($id / 1000000);
-        if($suffix<=0) $suffix = 1;
-        return $this->getTableName($table_name) . '_' . $suffix;
-    }
-    
     public function field($field)
     {
         $this->field = $field;
@@ -86,7 +79,8 @@ abstract class Service
     
     public function readOne($sql_val = [], $sql = '')
     {
-        return array_shift($this->read($sql_val, $sql));
+        $rows = $this->read($sql_val, $sql);
+        return array_shift($rows);
     }
     
     public function insert($data_list)
