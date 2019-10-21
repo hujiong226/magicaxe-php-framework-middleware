@@ -40,9 +40,10 @@ abstract class Service
         return $this;
     }
     
-    public function where($where_condition)
+    public function where($where_condition, $sql_val = [])
     {
         $this->where = 'where ' . $where_condition;
+        if(!empty($sql_val)) $this->sql_val = $sql_val;
         
         return $this;
     }
@@ -68,18 +69,21 @@ abstract class Service
         return $this;
     }
     
-    public function read($sql_val = [], $sql = '')
+    public function read($sql = '', $sql_val = [])
     {
         $this->sql = $sql == '' ? "select " . $this->field . " from " . $this->table . " " . $this->where . " " . $this->group . " " . $this->order . " " . $this->limit . ";" : $sql;
-        $this->sql_val = $sql_val;
+        if(!empty($sql_val))
+        {
+            $this->sql_val = array_merge($this->sql_val, $sql_val);
+        }
         
         $rows = std_decode(DB::select($this->sql, $this->sql_val));
         return $rows;
     }
     
-    public function readOne($sql_val = [], $sql = '')
+    public function readOne($sql = '', $sql_val = [])
     {
-        $rows = $this->read($sql_val, $sql);
+        $rows = $this->read($sql, $sql_val);
         return array_shift($rows);
     }
     
@@ -96,15 +100,17 @@ abstract class Service
     public function update($sql_val = [])
     {
         $this->sql = "update " . $this->table . " set " . $this->field . " " . $this->where . ";";
-        $this->sql_val = $sql_val;
+        if(!empty($sql_val))
+        {
+            $this->sql_val = array_merge($this->sql_val, $sql_val);
+        }
         
         return DB::update($this->sql, $this->sql_val);
     }
     
-    public function delete($sql_val = [])
+    public function delete()
     {
         $this->sql = "delete from " . $this->table . " " . $this->where . ";";
-        $this->sql_val = $sql_val;
         
         return DB::delete($this->sql, $this->sql_val);
     }
