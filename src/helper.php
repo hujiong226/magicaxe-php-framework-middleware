@@ -40,7 +40,7 @@ if (!function_exists('encodeTree')) {
                 $tree[$item[$item_key]] = $item;
                 unset($list[$key]);
                 $tree[$item[$item_key]]['level']  = $level;
-                $tree[$item[$item_key]]['child'] = encodeTree($list, $item[$item_key], $parent_key, $level);
+                $tree[$item[$item_key]]['child'] = encodeTree($list, $item[$item_key], $item_key, $parent_key, $level);
             }
         }
 
