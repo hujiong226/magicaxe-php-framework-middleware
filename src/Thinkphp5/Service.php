@@ -5,131 +5,39 @@ use think\Db;
 
 abstract class Service
 {
-    private $table;
-    private $field;
-    private $where;
-    private $group;
-    private $order;
-    private $limit;
-    private $sql;
-    private $sql_val;
-    
-    public function table($table_name)
-    {
-        $this->table = $this->getTableName($table_name);
-        $this->field = '*';
-        $this->where = '';
-        $this->group = '';
-        $this->order = '';
-        $this->limit = '';
-        $this->sql = '';
-        $this->sql_val = [];
-        
-        return $this;
-    }
-
-    public function getTableName($table_name)
+    public static function getTableName($table_name)
     {
         return config('database.prefix') . $table_name;
     }
-    
-    public function field($field)
+
+    public static function insert($sql, $sql_val = [])
     {
-        $this->field = $field;
-        
-        return $this;
+        return Db::execute($sql, $sql_val);
+    }
+
+    public static function delete($sql, $sql_val = [])
+    {
+        return Db::execute($sql, $sql_val);
+    }
+
+    public static function update($sql, $sql_val = [])
+    {
+        return Db::execute($sql, $sql_val);
     }
     
-    public function where($where_condition, $sql_val = [])
+    public static function read($sql, $sql_val = [])
     {
-        $this->where = 'where ' . $where_condition;
-        if(!empty($sql_val)) $this->sql_val = $sql_val;
-        
-        return $this;
+        return Db::query($sql, $sql_val);
     }
     
-    public function group($group_condition)
-    {
-        $this->group = 'group by ' . $group_condition;
-        
-        return $this;
-    }
-    
-    public function order($order_condition)
-    {
-        $this->order = 'order by ' . $order_condition;
-        
-        return $this;
-    }
-    
-    public function limit($limit)
-    {
-        $this->limit = 'limit ' . $limit;
-        
-        return $this;
-    }
-    
-    public function read($sql = '', $sql_val = [])
-    {
-        if(!empty($sql))
-        {
-            return Db::query($sql, $sql_val);
-        }
-        else
-        {
-            $this->sql = "select " . $this->field . " from " . $this->table . " " . $this->where . " " . $this->group . " " . $this->order . " " . $this->limit . ";";
-            return Db::query($this->sql, $this->sql_val);
-        }
-    }
-    
-    public function readOne($sql = '', $sql_val = [])
+    public static function readOne($sql, $sql_val = [])
     {
         $rows = $this->read($sql, $sql_val);
         return array_shift($rows);
     }
     
-    public function insert($data_list)
+    public static function getLastInsID($table_name)
     {
-        if(count($data_list) == 1)
-        {
-            return Db::table($this->table)->insert($data_list);
-        }
-        else
-        {
-            return Db::table($this->table)->insertAll($data_list);
-        }
-    }
-    
-    public function getLastInsID()
-    {
-        return Db::table($this->table)->getLastInsID();
-    }
-
-    public function update($sql_val = [])
-    {
-        $this->sql = "update " . $this->table . " set " . $this->field . " " . $this->where . ";";
-        if(!empty($sql_val))
-        {
-            $this->sql_val = array_merge($this->sql_val, $sql_val);
-        }
-        
-        return Db::execute($this->sql, $this->sql_val);
-    }
-    
-    public function delete()
-    {
-        $this->sql = "delete from " . $this->table . " " . $this->where . ";";
-        
-        return Db::execute($this->sql, $this->sql_val);
-    }
-    
-    public function getSql()
-    {
-        return $this->sql;
-    }
-    
-    public function getSqlVal()
-    {
-        return $this->sql_val;
+        return Db::name($table_name)->getLastInsID();
     }
 }

@@ -1,5 +1,24 @@
 <?php
 
+if (!function_exists('alert')) {
+    function alert($_msg)
+    {
+        echo "<script>alert('".$_msg."');</script>";
+    }
+}
+
+if (!function_exists('browser_redirect')) {
+    function browser_redirect($url)
+    {
+        echo "<script>
+                setTimeout(function(){
+                    window.location.href = '" . $url . "';
+                },10);
+            </script>";
+        exit();
+    }
+}
+
 if (!function_exists('std_decode')) {
     function std_decode($obj)
     {
