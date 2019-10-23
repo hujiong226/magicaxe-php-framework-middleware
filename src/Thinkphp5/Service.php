@@ -71,14 +71,15 @@ abstract class Service
     
     public function read($sql = '', $sql_val = [])
     {
-        $this->sql = $sql == '' ? "select " . $this->field . " from " . $this->table . " " . $this->where . " " . $this->group . " " . $this->order . " " . $this->limit . ";" : $sql;
-        if(!empty($sql_val))
+        if(!empty($sql))
         {
-            $this->sql_val = array_merge($this->sql_val, $sql_val);
+            return Db::query($sql, $sql_val);
         }
-        
-        $rows = Db::query($this->sql, $this->sql_val);
-        return $rows;
+        else
+        {
+            $this->sql = "select " . $this->field . " from " . $this->table . " " . $this->where . " " . $this->group . " " . $this->order . " " . $this->limit . ";";
+            return Db::query($this->sql, $this->sql_val);
+        }
     }
     
     public function readOne($sql = '', $sql_val = [])
