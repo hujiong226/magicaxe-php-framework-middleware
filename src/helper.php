@@ -29,7 +29,7 @@ if (!function_exists('std_decode')) {
 }
 
 if (!function_exists('encodeTree')) {
-    function encodeTree(&$list, $parent_id, $parent_key, $level = 0)
+    function encodeTree(&$list, $parent_id, $item_key, $parent_key, $level = 0)
     {
         $tree = [];
         $level ++;
@@ -37,10 +37,10 @@ if (!function_exists('encodeTree')) {
         {
             if($item[$parent_key] == $parent_id)
             {
-                $tree[$item['id']] = $item;
+                $tree[$item[$item_key]] = $item;
                 unset($list[$key]);
-                $tree[$item['id']]['level']  = $level;
-                $tree[$item['id']]['child'] = encodeTree($list, $item['id'], $parent_key, $level);
+                $tree[$item[$item_key]]['level']  = $level;
+                $tree[$item[$item_key]]['child'] = encodeTree($list, $item[$item_key], $parent_key, $level);
             }
         }
 
