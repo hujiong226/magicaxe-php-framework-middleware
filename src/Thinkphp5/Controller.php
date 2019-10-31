@@ -15,11 +15,18 @@ abstract class Controller extends \think\Controller
         }
         else
         {
-            return view($template,[
-                'code' => $this->code,
-                'data' => $this->data,
-                'msg' => $this->msg,
-            ]);
+            if($template == 'json')
+            {
+                return json_encode(['code' => $this->code,'data' => $this->data,'msg' => $this->msg]);
+            }
+            else
+            {
+                return view($template,[
+                    'code' => $this->code,
+                    'data' => $this->data,
+                    'msg' => $this->msg,
+                ]);
+            }
         }
     }
 }
