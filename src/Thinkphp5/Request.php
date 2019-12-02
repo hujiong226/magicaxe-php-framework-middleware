@@ -12,7 +12,7 @@ class Request extends \think\Request
      * 初始化
      * @access public
      * @param array $options 参数
-     * @return \think\Request
+     * @return \Magicaxe\Thinkphp5\Request
      */
     public static function instance($options = [])
     {

@@ -7,26 +7,19 @@ abstract class Controller extends \think\Controller
     protected $data = array();
     protected $msg = array();
     
-    protected function view($template = '')
+    protected function render($template = '')
     {
-        if(!empty(request()->get('_a')))
+        if($template == 'json')
         {
-            return json_encode(['code' => $this->code,'data' => $this->data,'msg' => $this->msg]);
+            return json(['code' => $this->code,'data' => $this->data,'msg' => $this->msg]);
         }
         else
         {
-            if($template == 'json')
-            {
-                return json_encode(['code' => $this->code,'data' => $this->data,'msg' => $this->msg]);
-            }
-            else
-            {
-                return view($template,[
-                    'code' => $this->code,
-                    'data' => $this->data,
-                    'msg' => $this->msg,
-                ]);
-            }
+            return view($template, [
+                'code' => $this->code,
+                'data' => $this->data,
+                'msg' => $this->msg,
+            ]);
         }
     }
 }
